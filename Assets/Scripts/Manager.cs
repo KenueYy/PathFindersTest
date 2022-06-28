@@ -1,13 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using System;
 
 public class Manager : MonoBehaviour
 {
     [SerializeField] private PathFinderType pathFinderType;
-    [SerializeField] private View view;
     [SerializeField] private KeyCode keyCode;
+
+    private IView view;
 
     private PathFinder pathFinder;
     private Vector2 firstPoint, secondPoint;
@@ -27,7 +25,7 @@ public class Manager : MonoBehaviour
                 pathFinder = GetComponent<AlgorithmLee>();
                 break;
         }
-
+        view = GetComponent<View>();
     }
     private void Update()
     {

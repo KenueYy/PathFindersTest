@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class View : MonoBehaviour
+public class View : MonoBehaviour, IView
 {
     private List<Vector2> path;
     private Vector2 firstPoint;
@@ -25,7 +25,7 @@ public class View : MonoBehaviour
     }
     public void SetFirstPoint(Vector2 position)
     {
-        if(!GetTile.instance.isObstacle(position))
+        if (!GetTile.instance.isObstacle(position))
             firstPoint = new Vector2(Mathf.Round(position.x), Mathf.Round(position.y));
     }
     public void SetSecondPoint(Vector2 position)
