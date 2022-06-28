@@ -16321,9 +16321,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1390325093}
-  - component: {fileID: 1390325091}
-  - component: {fileID: 1390325094}
   - component: {fileID: 1390325090}
+  - component: {fileID: 1390325094}
+  - component: {fileID: 1390325091}
   - component: {fileID: 1390325092}
   - component: {fileID: 1390325095}
   m_Layer: 0
@@ -16345,8 +16345,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 88a283af697b3534988bbb212f761658, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pathFinderType: 0
-  view: {fileID: 1390325091}
+  pathFinderType: 1
   keyCode: 32
 --- !u!114 &1390325091
 MonoBehaviour:

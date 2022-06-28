@@ -27,10 +27,14 @@ public class View : MonoBehaviour, IView
     {
         if (!GetTile.instance.isObstacle(position))
             firstPoint = new Vector2(Mathf.Round(position.x), Mathf.Round(position.y));
+        else
+            Debug.Log(Exceptions.Exception.NodeIsNotWalkable);
     }
     public void SetSecondPoint(Vector2 position)
     {
         if (!GetTile.instance.isObstacle(position))
             secondPoint = new Vector2(Mathf.Round(position.x), Mathf.Round(position.y));
+        else
+            Debug.Log(Exceptions.Exception.NodeIsNotWalkable);
     }
 }
