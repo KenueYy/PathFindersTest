@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PathFinder : MonoBehaviour
+public abstract class PathFinder : MonoBehaviour
 {
     protected List<Vector2> path = new List<Vector2>();
     protected List<Node> checkedNodes;

@@ -12,7 +12,9 @@ public class Manager : MonoBehaviour
     public enum PathFinderType
     {
         LeeAlgorithm,
-        AStar
+        AStar,
+        Psevdo,
+        NewAStar
     }
     public void Start()
     {
@@ -23,6 +25,12 @@ public class Manager : MonoBehaviour
                 break;
             case PathFinderType.LeeAlgorithm:
                 pathFinder = GetComponent<AlgorithmLee>();
+                break;
+            case PathFinderType.Psevdo:
+                pathFinder = GetComponent<PsevdoLee>();
+                break;
+            case PathFinderType.NewAStar:
+                pathFinder = GetComponent<NewAStar>();
                 break;
         }
         view = GetComponent<View>();
