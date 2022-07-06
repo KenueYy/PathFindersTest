@@ -1,55 +1,53 @@
 using UnityEngine;
+using Algoritms;
+using Models;
+using Views;
 
-public class Manager : MonoBehaviour
+namespace Controllers
 {
-    [SerializeField] private PathFinderType pathFinderType;
-    [SerializeField] private KeyCode keyCode;
+    public class Manager : MonoBehaviour
+    {
+        [SerializeField] private PathFinderType pathFinderType;
+        [SerializeField] private KeyCode keyCode;
 
-    private IView view;
+        private IView view;
 
-    private PathFinder pathFinder;
-    private Vector2 firstPoint, secondPoint;
-    public enum PathFinderType
-    {
-        LeeAlgorithm,
-        AStar,
-        Psevdo,
-        NewAStar
-    }
-    public void Start()
-    {
-        switch (pathFinderType)
+        private PathFinder pathFinder;
+        private Vector2 firstPoint, secondPoint;
+        public enum PathFinderType
         {
-            case PathFinderType.AStar:
-                pathFinder = GetComponent<AStar>();
-                break;
-            case PathFinderType.LeeAlgorithm:
-                pathFinder = GetComponent<AlgorithmLee>();
-                break;
-            case PathFinderType.Psevdo:
-                pathFinder = GetComponent<PsevdoLee>();
-                break;
-            case PathFinderType.NewAStar:
-                pathFinder = GetComponent<NewAStar>();
-                break;
+            LeeAlgorithm,
+            AStar,
         }
-        view = GetComponent<View>();
-    }
-    private void Update()
-    {
-        if (Input.GetMouseButtonDown(0))
+        public void Start()
         {
-            firstPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            view.SetFirstPoint(firstPoint);
+            switch (pathFinderType)
+            {
+                case PathFinderType.AStar:
+                    pathFinder = GetComponent<AStar>();
+                    break;
+                case PathFinderType.LeeAlgorithm:
+                    pathFinder = GetComponent<AlgorithmLee>();
+                    break;
+            }
+            view = GetComponent<View>();
         }
-        if (Input.GetMouseButtonDown(1))
+        private void Update()
         {
-            secondPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            view.SetSecondPoint(secondPoint);
-        }
-        if (Input.GetKeyDown(keyCode))
-        {
-            view.SetPath(pathFinder.GetNodeList(firstPoint, secondPoint)); 
+            if (Input.GetMouseButtonDown(0))
+            {
+                firstPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                view.SetFirstPoint(firstPoint);
+            }
+            if (Input.GetMouseButtonDown(1))
+            {
+                secondPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                view.SetSecondPoint(secondPoint);
+            }
+            if (Input.GetKeyDown(keyCode))
+            {
+                view.SetPath(pathFinder.GetNodeList(firstPoint, secondPoint));
+            }
         }
     }
 }
