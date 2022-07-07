@@ -1,18 +1,18 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class Exceptions : MonoBehaviour
-{
-    public static Exceptions instance;
-    public Exception exception;
-    public enum Exception
+namespace Utils {
+    public class Exceptions : MonoBehaviour
     {
-        NodeIsNotWalkable,
-        Other
-    }
-    public Exceptions()
-    {
-        instance = this;
+        public static Exceptions instance;
+        public Exception exception;
+        public enum Exception
+        {
+            NodeIsNotWalkable,
+            Other
+        }
+        public Exceptions()
+        {
+            instance = this;
+        }
     }
 }
