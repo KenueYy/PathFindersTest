@@ -1,6 +1,7 @@
 using UnityEngine;
 using Algoritms;
 using Models;
+using Utils.Extensions;
 using Views;
 
 namespace Controllers
@@ -46,7 +47,9 @@ namespace Controllers
             }
             if (Input.GetKeyDown(keyCode))
             {
-                view.SetPath(pathFinder.GetNodeList(firstPoint, secondPoint));
+                // Добавил экстенш преобразования в Vector2Int.
+                // Чтобы получить тот самый уникальный код ячейки, нужно преобразовать координаты в интовые и работать с интовыми координатами
+                view.SetPath(pathFinder.GetNodeList(firstPoint.ToVector2Int(), secondPoint.ToVector2Int()));
             }
         }
     }

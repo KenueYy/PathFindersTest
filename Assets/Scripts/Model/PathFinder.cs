@@ -8,38 +8,46 @@ namespace Models
     {
         protected List<Vector2> path = new List<Vector2>();
 
-        protected List<Vector2> directions = new List<Vector2>();
+        protected List<Vector2Int> directions = new List<Vector2Int>();
 
         public PathFinder()
         {
-            directions.Add(Vector2.up);
-            directions.Add(Vector2.right);
-            directions.Add(Vector2.down);
-            directions.Add(Vector2.left);
+            directions.Add(Vector2Int.up);
+            directions.Add(Vector2Int.right);
+            directions.Add(Vector2Int.down);
+            directions.Add(Vector2Int.left);
         }
-        public virtual List<Vector2> GetNodeList(Vector2 position, Vector2 target)
+        public virtual List<Vector2> GetNodeList(Vector2Int position, Vector2Int target)
         {
             return path;
         }
+        
+        /// <summary>
+        /// Очищает список
+        /// <para>Эмммм... а зачем было до этого выделять новый список, если можно этот очистить?</para>
+        /// </summary>
         protected void ResetLists()
         {
-            path = new List<Vector2>();
+            path.Clear();
         }
-        protected List<Node> GetNeighbourNodes(Node node)
+        
+        /// <summary>
+        /// Возвращает перечисление узлов-соседей
+        /// <para>В отличии от укомлектования в список, здесь выделяется память только на создание объекта Генератора,
+        /// который тут же диспозится по завершении работы с ним</para>
+        /// <para>Почитай про IEnumerable, когда в них появляются значения, хранятся ли они где-то?</para>
+        /// </summary>
+        protected IEnumerable<Node> GetNeighbourNodes(Node node)
         {
-            List<Node> neighbours = new List<Node>();
-
-            foreach (Vector2 direction in directions)
+            foreach (Vector2Int direction in directions)
             {
                 if (!GetTile.instance.isObstacle(node.position + direction))
                 {
-                    Node neigbour = new Node(node.position + direction, node);
-                    neighbours.Add(neigbour);
+                    yield return new Node(node.position + direction, node);
                 }
             }
-
-            return neighbours;
         }
+
         protected List<Vector2> CreatePath(Node node)
         {
             Node currentNode = node;

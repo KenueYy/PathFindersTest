@@ -6,30 +6,37 @@ namespace Algoritms
 {
     public class AlgorithmLee : PathFinder
     {
-        public override List<Vector2> GetNodeList(Vector2 position, Vector2 target)
+        public override List<Vector2> GetNodeList(Vector2Int startPosition, Vector2Int targetPosition)
         {
             ResetLists();
-            Vector2 startPosition = new Vector2(Mathf.Round(position.x), Mathf.Round(position.y));
-            Vector2 targetPosition = new Vector2(Mathf.Round(target.x), Mathf.Round(target.y));
 
             if (startPosition == targetPosition) return path;
 
+            var targetId = GetTile.instance.GetNodeId(in targetPosition);
+
             Node startNode = new Node(startPosition, targetPosition);
             Queue<Node> waitings = new Queue<Node>();
-            Dictionary<Vector2, Node> visited = new Dictionary<Vector2, Node>();
+            
+            // Даже если не выводить это ID ячейки, то выставлять в качестве ключа Vector2 - плохая идея
+            // Потому что при сравнении он будет сравнивать 2 флоата с другими 2мя флотатами
+            // На точность этой операции не стоит возлагать надежды (не говоря о том, что это не обычный знак ==)
+            // Dictionary<Vector2, Node> visited = new Dictionary<Vector2, Node>();
+            Dictionary<long, Node> visited = new Dictionary<long, Node>();
 
             waitings.Enqueue(startNode);
             while (waitings.Count > 0)
             {
-                List<Node> nodes = GetNeighbourNodes(waitings.Dequeue());
+                // Здесь использовано именно перечисление, дабы не выделять под массив новой памяти
+                // О прелестях работы с IEnumerable читай в документации
+                IEnumerable<Node> nodes = GetNeighbourNodes(waitings.Dequeue());
                 foreach (Node curNode in nodes)
                 {
-                    if (!visited.ContainsKey(curNode.position))
+                    if (!visited.ContainsKey(curNode.ID))
                     {
-                        if (curNode.position != targetPosition)
+                        if (curNode.ID != targetId)
                         {
                             waitings.Enqueue(curNode);
-                            visited.Add(curNode.position, curNode);
+                            visited.Add(curNode.ID, curNode);
                         }
                         else
                         {
