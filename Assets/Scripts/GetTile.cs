@@ -12,6 +12,15 @@ public class GetTile : MonoBehaviour
     public static GetTile instance;
     [SerializeField] private Vector2Int leftUpPoint;
     [SerializeField] private Vector2Int rightDownPoint;
+    
+    /// <summary>
+    /// Чтобы получить корректный ID ячейки, нужно знать резмеры поля
+    /// <para>Идеальный вариант был бы кэшировать значения, а не вычислять каждый раз,
+    /// но в этом случае тогда бы пришлось отслеживать изменения (лень сейчас это делать)</para>
+    /// </summary>
+    internal Vector2Int FieldSize => new Vector2Int(Mathf.Abs(rightDownPoint.x - leftUpPoint.x), Mathf.Abs(leftUpPoint.y - rightDownPoint.y));
+
+
     public GetTile()
     {
         instance = this;
@@ -41,23 +50,28 @@ public class GetTile : MonoBehaviour
         }
         return true;
     }
-    public int MinX()
-    {
-        if (leftUpPoint.x > rightDownPoint.x)
-            return rightDownPoint.x;
-        else if (leftUpPoint.x < rightDownPoint.x)
-            return leftUpPoint.x;
-        else
-            return leftUpPoint.x;
+
+    /// <summary>
+    /// Возвращает ID ячейки, полученный исходя из размера поля
+    /// </summary>
+    internal long GetNodeId(in Vector2Int position) {
+        // Получаем размер поля [X - ширина (кол-во столбцов); Y - высота (кол-во строк)]
+        var fieldSize = FieldSize;
+
+        // Фиксируем индекс колонки (Х) и индекс строки (Y) отностиельно начала поля (левого нижнего угла)
+        Vector2Int positionIndexes = new Vector2Int(position.x - Mathf.Abs(GetTile.instance.MinX()), 
+                                                    position.y - Mathf.Abs(GetTile.instance.MinY()));
+
+        // ИД = Индекс строки (высота, Y) * кол-во стролбцов в поле (ширина поля, Х) + индекс столбца (ширина, X)
+        return (positionIndexes.y * fieldSize.x) + positionIndexes.x;
     }
-    public int MinY()
-    {
-        if (leftUpPoint.y > rightDownPoint.y)
-            return rightDownPoint.x;
-        else if (leftUpPoint.y < rightDownPoint.y)
-            return leftUpPoint.y;
-        else
-            return leftUpPoint.y;
+    
+
+    public int MinX() {
+        return leftUpPoint.x > rightDownPoint.x ? rightDownPoint.x : leftUpPoint.x;
+    }
+    public int MinY() {
+        return leftUpPoint.y > rightDownPoint.y ? rightDownPoint.y : leftUpPoint.y;
     }
     //private void Normalize()
     //{
